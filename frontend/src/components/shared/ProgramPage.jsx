@@ -1,6 +1,5 @@
 import { usePageTheme } from '../../hooks/usePageTheme.js'
 import ApplyDialog from './ApplyDialog.jsx'
-import SpiralCurriculum from './SpiralCurriculum.jsx'
 import { motion } from 'framer-motion'
 import { fadeInUp, staggerContainer, scaleIn } from '../../constants/animations.js'
 
@@ -14,7 +13,6 @@ import { fadeInUp, staggerContainer, scaleIn } from '../../constants/animations.
  *   badge           {string}  — optional "Founding Cohort" badge
  *   subtitle        {string}  — description paragraph
  *   ctaLabel        {string}  — primary CTA button text
- *   spiralSemesters {Array}   — semester data for SpiralCurriculum
  */
 export default function ProgramPage({
   theme,
@@ -24,7 +22,6 @@ export default function ProgramPage({
   badge,
   subtitle,
   ctaLabel,
-  spiralSemesters,
 }) {
   usePageTheme(theme)
 
@@ -118,20 +115,6 @@ export default function ProgramPage({
                 {ctaLabel}
               </button>
             </ApplyDialog>
-            <a
-              href="#curriculum"
-              style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '0.375rem',
-                border: '1px solid var(--hairline)',
-                background: 'var(--surface-soft)',
-                fontWeight: 500,
-                color: 'var(--foreground)',
-                textDecoration: 'none',
-              }}
-            >
-              View Curriculum
-            </a>
           </div>
         </div>
 
@@ -180,22 +163,6 @@ export default function ProgramPage({
           ))}
         </div>
       </motion.section>
-
-      {/* Curriculum */}
-      {spiralSemesters && (
-        <section id="curriculum" style={{ maxWidth: '80rem', margin: '0 auto', padding: '6rem 1.5rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold)', marginBottom: '0.75rem' }}>
-              Information Architecture
-            </div>
-            <h2 style={{ fontSize: 'clamp(1.875rem,5vw,3rem)', fontWeight: 700, marginBottom: '1.5rem' }}>Program Curriculum</h2>
-            <p style={{ fontSize: '1.125rem', color: 'var(--muted-foreground)', maxWidth: '48rem', margin: '0 auto', lineHeight: 1.625 }}>
-              Our Continuous Progressive Model ensuring mastery from foundation to advanced application.
-            </p>
-          </div>
-          <SpiralCurriculum semesters={spiralSemesters} />
-        </section>
-      )}
 
       {/* Final CTA */}
       <section style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1.5rem 6rem' }}>

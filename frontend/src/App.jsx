@@ -12,7 +12,6 @@ import DataScience from './pages/programs/DataScience.jsx'
 import InformationTechnology from './pages/programs/InformationTechnology.jsx'
 import Crm from './pages/programs/Crm.jsx'
 import ProgramDetail from './pages/programmes/ProgramDetail.jsx'
-import CurriculumPage from './pages/programmes/CurriculumPage.jsx'
 
 export default function App() {
   return (
@@ -37,7 +36,6 @@ export default function App() {
           
           {/* New Dynamic Programmes Routes */}
           <Route path="/programmes/:category/:programId" element={<ProgramDetail />} />
-          <Route path="/programmes/:category/:programId/curriculum" element={<CurriculumPage />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>

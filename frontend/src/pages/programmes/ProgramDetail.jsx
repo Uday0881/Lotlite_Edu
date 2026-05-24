@@ -51,36 +51,7 @@ export default function ProgramDetail() {
             <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '1.5rem' }}>Program Overview</h2>
             <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.7, marginBottom: '2rem' }}>
               This comprehensive {program.shortTitle} program is designed to equip students with the theoretical knowledge and practical skills required to excel in the modern landscape.
-              Our curriculum is constantly updated to reflect the latest industry trends and academic research.
             </p>
-
-            <Link 
-              to={`/programmes/${program.category}/${programId}/curriculum`}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.875rem 1.5rem',
-                borderRadius: '0.5rem',
-                background: 'var(--card)',
-                color: 'var(--foreground)',
-                border: '1px solid var(--gold)',
-                textDecoration: 'none',
-                fontWeight: 600,
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--gold)';
-                e.currentTarget.style.color = 'var(--navy-deep)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'var(--card)';
-                e.currentTarget.style.color = 'var(--foreground)';
-              }}
-            >
-              <BookOpen size={18} />
-              View Full Curriculum
-            </Link>
           </div>
 
           {/* Sidebar */}

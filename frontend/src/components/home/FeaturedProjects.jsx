@@ -30,11 +30,21 @@ export default function FeaturedProjects() {
           className="projects-grid"
           variants={staggerContainer}
         >
-          <style>{`@media(min-width:768px){.projects-grid{grid-template-columns:repeat(3,1fr)}}`}</style>
+          <style>{`
+            .project-card { display: flex; flex-direction: column; }
+            .project-img-wrapper { height: 16rem; flex-shrink: 0; }
+            @media(min-width:768px){
+              .projects-grid { gap: 1.5rem; }
+              .project-card { flex-direction: row; align-items: stretch; }
+              .project-img-wrapper { width: 40%; height: auto; min-height: 14rem; }
+              .project-content { display: flex; flex-direction: column; justify-content: center; padding: 2.5rem !important; }
+            }
+          `}</style>
           {projectCardsData.map((p) => (
             <motion.div
               key={p.title}
               variants={fadeInUp}
+              className="project-card"
               style={{
                 borderRadius: '1rem',
                 border: '1px solid var(--hairline)',
@@ -51,7 +61,7 @@ export default function FeaturedProjects() {
                 e.currentTarget.style.opacity = '0.9'
               }}
             >
-              <div style={{ height: '12rem', overflow: 'hidden' }}>
+              <div className="project-img-wrapper" style={{ overflow: 'hidden' }}>
                 <img
                   src={p.image}
                   alt={p.title}
@@ -60,12 +70,12 @@ export default function FeaturedProjects() {
                   onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                 />
               </div>
-              <div style={{ padding: '1.5rem' }}>
+              <div className="project-content" style={{ padding: '1.5rem', flex: 1 }}>
                 <div style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold)', marginBottom: '0.5rem' }}>
                   {p.category}
                 </div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem' }}>{p.title}</h3>
-                <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', lineHeight: 1.625 }}>{p.description}</p>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem' }}>{p.title}</h3>
+                <p style={{ fontSize: '1rem', color: 'var(--muted-foreground)', lineHeight: 1.625 }}>{p.description}</p>
               </div>
             </motion.div>
           ))}

@@ -5,7 +5,6 @@ import PartnersMarquee from '../components/home/PartnersMarquee.jsx'
 import LifeCarousel from '../components/home/LifeCarousel.jsx'
 import DemoDay from '../components/home/DemoDay.jsx'
 import FeaturedProjects from '../components/home/FeaturedProjects.jsx'
-import GenericCurriculum from '../components/home/GenericCurriculum.jsx'
 import DailySchedule from '../components/home/DailySchedule.jsx'
 import PillarsSection from '../components/home/PillarsSection.jsx'
 import OutcomesSection from '../components/home/OutcomesSection.jsx'
@@ -33,7 +32,6 @@ export default function Home() {
       <LifeCarousel />
       <DemoDay />
       <FeaturedProjects />
-      <GenericCurriculum />
       <DailySchedule />
       <PillarsSection />
       <OutcomesSection />
