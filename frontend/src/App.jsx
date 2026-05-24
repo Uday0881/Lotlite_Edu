@@ -11,6 +11,8 @@ import MbaRealEstate from './pages/programs/MbaRealEstate.jsx'
 import DataScience from './pages/programs/DataScience.jsx'
 import InformationTechnology from './pages/programs/InformationTechnology.jsx'
 import Crm from './pages/programs/Crm.jsx'
+import ProgramDetail from './pages/programmes/ProgramDetail.jsx'
+import CurriculumPage from './pages/programmes/CurriculumPage.jsx'
 
 export default function App() {
   return (
@@ -26,10 +28,17 @@ export default function App() {
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/code-of-conduct" element={<CodeOfConduct />} />
           <Route path="/admin" element={<Admin />} />
+          
+          {/* Legacy Routes - keeping them in case they are used elsewhere */}
           <Route path="/programs/mba-real-estate" element={<MbaRealEstate />} />
           <Route path="/programs/data-science" element={<DataScience />} />
           <Route path="/programs/information-technology" element={<InformationTechnology />} />
           <Route path="/programs/crm" element={<Crm />} />
+          
+          {/* New Dynamic Programmes Routes */}
+          <Route path="/programmes/:category/:programId" element={<ProgramDetail />} />
+          <Route path="/programmes/:category/:programId/curriculum" element={<CurriculumPage />} />
+
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

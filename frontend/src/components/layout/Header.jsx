@@ -1,32 +1,16 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X, ChevronRight } from 'lucide-react'
 import ThemeToggle from '../shared/ThemeToggle.jsx'
 import ApplyDialog from '../shared/ApplyDialog.jsx'
-
-// ---- Edit navigation items here ----
-const programs = [
-  {
-    to: '/programs/data-science',
-    label: 'DS — Data Science in Real Estate',
-    desc: 'Predictive land value modeling',
-  },
-  {
-    to: '/programs/information-technology',
-    label: 'MCA (PropTech)',
-    desc: 'PropTech infrastructure',
-  },
-  {
-    to: '/programs/mba-real-estate',
-    label: 'MBA in Real Estate',
-    desc: 'Business strategy & property technology',
-  },
-]
+import { programmesData } from '../../data/programmesData.js'
 
 export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [activeMobileAccordion, setActiveMobileAccordion] = useState(null)
+  const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -68,6 +52,7 @@ export default function Header() {
         {/* Logo */}
         <Link
           to="/"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}
         >
           <div
@@ -100,7 +85,7 @@ export default function Header() {
             @media (max-width: 1023px) { .lg-nav { display: none !important; } }
           `}</style>
 
-          {/* Programs Dropdown */}
+          {/* Programmes Dropdown */}
           <div
             style={{ position: 'relative' }}
             onMouseEnter={() => setDropdownOpen(true)}
@@ -120,7 +105,7 @@ export default function Header() {
                 gap: '0.25rem',
               }}
             >
-              PG Programs <ChevronDown size={14} />
+              Programmes <ChevronDown size={14} />
             </button>
             {dropdownOpen && (
               <div
@@ -129,7 +114,7 @@ export default function Header() {
                   top: '100%',
                   left: 0,
                   paddingTop: '0.75rem',
-                  width: '420px',
+                  width: '280px',
                   animation: 'fade-in 0.2s ease-out',
                 }}
               >
@@ -137,17 +122,76 @@ export default function Header() {
                   className="bg-glass border-hairline"
                   style={{ borderRadius: '0.75rem', padding: '0.5rem', boxShadow: 'var(--shadow-premium)' }}
                 >
-                  {programs.map((p) => (
-                    <Link
-                      key={p.to}
-                      to={p.to}
-                      style={{ display: 'block', padding: '0.75rem 1rem', borderRadius: '0.5rem', textDecoration: 'none' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
-                    >
-                      <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>{p.label}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--muted-foreground)', marginTop: '0.125rem' }}>{p.desc}</div>
-                    </Link>
+                  {programmesData.navigation.map((navItem, idx) => (
+                    <div key={idx} style={{ position: 'relative' }} className="group">
+                      {navItem.type === 'link' ? (
+                        <Link
+                          to={navItem.path}
+                          style={{ display: 'block', padding: '0.75rem 1rem', borderRadius: '0.5rem', textDecoration: 'none' }}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+                        >
+                          <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>{navItem.title}</div>
+                        </Link>
+                      ) : (
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: '0.75rem 1rem',
+                            borderRadius: '0.5rem',
+                            cursor: 'default',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                            e.currentTarget.nextElementSibling.style.display = 'block';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'none';
+                            e.currentTarget.nextElementSibling.style.display = 'none';
+                          }}
+                        >
+                          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>{navItem.title}</span>
+                          <ChevronRight size={14} style={{ color: 'var(--muted-foreground)' }} />
+                        </div>
+                      )}
+                      {/* Nested Dropdown for Desktop */}
+                      {navItem.type === 'dropdown' && (
+                        <div
+                          style={{
+                            display: 'none',
+                            position: 'absolute',
+                            left: '100%',
+                            top: 0,
+                            paddingLeft: '0.5rem',
+                            width: '240px',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.display = 'block';
+                            e.currentTarget.previousElementSibling.style.background = 'rgba(255,255,255,0.05)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.previousElementSibling.style.background = 'none';
+                          }}
+                        >
+                          <div className="bg-glass border-hairline" style={{ borderRadius: '0.75rem', padding: '0.5rem', boxShadow: 'var(--shadow-premium)' }}>
+                            {navItem.items.map((subItem, sIdx) => (
+                              <Link
+                                key={sIdx}
+                                to={subItem.path}
+                                style={{ display: 'block', padding: '0.75rem 1rem', borderRadius: '0.5rem', textDecoration: 'none' }}
+                                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
+                                onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+                              >
+                                <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>{subItem.label}</div>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -159,21 +203,27 @@ export default function Header() {
             { to: '/outcomes', label: 'Outcomes' },
             { to: '/incubation', label: 'Incubation' },
             { to: '/contact', label: 'Contact Us' },
-          ].map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              style={({ isActive }) => ({
-                padding: '0.5rem 1rem',
-                fontSize: '0.875rem',
-                color: isActive ? 'var(--gold)' : 'var(--foreground)',
-                opacity: isActive ? 1 : 0.9,
-                textDecoration: 'none',
-              })}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          ].map((item) => {
+            const isActive = item.hash 
+              ? location.pathname === '/' && location.hash === '#blogs'
+              : location.pathname.startsWith(item.to);
+
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                style={{
+                  padding: '0.5rem 1rem',
+                  fontSize: '0.875rem',
+                  color: isActive ? 'var(--gold)' : 'var(--foreground)',
+                  opacity: isActive ? 1 : 0.9,
+                  textDecoration: 'none',
+                }}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
         </nav>
 
         {/* Right actions */}
@@ -218,23 +268,64 @@ export default function Header() {
       {mobileOpen && (
         <div
           className="bg-glass border-hairline"
-          style={{ borderTop: '1px solid var(--hairline)', padding: '1rem 1.5rem', paddingBottom: '1.5rem' }}
+          style={{ borderTop: '1px solid var(--hairline)', padding: '1rem 1.5rem', paddingBottom: '1.5rem', maxHeight: 'calc(100vh - 4rem)', overflowY: 'auto' }}
         >
           <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted-foreground)', paddingTop: '0.5rem', marginBottom: '0.5rem' }}>
-            PG Programs
+            Programmes
           </div>
-          {programs.map((p) => (
-            <Link
-              key={p.to}
-              to={p.to}
-              onClick={() => setMobileOpen(false)}
-              style={{ display: 'block', padding: '0.5rem 0', fontSize: '0.875rem', color: 'var(--foreground)', textDecoration: 'none' }}
-            >
-              {p.label}
-            </Link>
-          ))}
+          <div style={{ marginBottom: '1rem', borderBottom: '1px solid var(--hairline)', paddingBottom: '1rem' }}>
+            {programmesData.navigation.map((navItem, idx) => (
+              <div key={idx}>
+                {navItem.type === 'link' ? (
+                  <Link
+                    to={navItem.path}
+                    onClick={() => setMobileOpen(false)}
+                    style={{ display: 'block', padding: '0.5rem 0', fontSize: '0.875rem', color: 'var(--foreground)', textDecoration: 'none' }}
+                  >
+                    {navItem.title}
+                  </Link>
+                ) : (
+                  <div>
+                    <button
+                      onClick={() => setActiveMobileAccordion(activeMobileAccordion === idx ? null : idx)}
+                      style={{
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        padding: '0.5rem 0',
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--foreground)',
+                        fontSize: '0.875rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {navItem.title}
+                      <ChevronDown size={14} style={{ transform: activeMobileAccordion === idx ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+                    </button>
+                    {activeMobileAccordion === idx && (
+                      <div style={{ paddingLeft: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: '0.5rem 0' }}>
+                        {navItem.items.map((subItem, sIdx) => (
+                          <Link
+                            key={sIdx}
+                            to={subItem.path}
+                            onClick={() => setMobileOpen(false)}
+                            style={{ display: 'block', fontSize: '0.875rem', color: 'var(--muted-foreground)', textDecoration: 'none' }}
+                          >
+                            {subItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
           {[
-            { to: '/', label: 'Blogs' },
+            { to: '/#blogs', label: 'Blogs' },
             { to: '/outcomes', label: 'Outcomes' },
             { to: '/incubation', label: 'Incubation' },
             { to: '/contact', label: 'Contact Us' },
@@ -254,7 +345,7 @@ export default function Header() {
               style={{
                 display: 'block',
                 width: '100%',
-                marginTop: '0.5rem',
+                marginTop: '1rem',
                 textAlign: 'center',
                 padding: '0.625rem',
                 borderRadius: '0.375rem',

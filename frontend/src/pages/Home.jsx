@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { usePageTheme } from '../hooks/usePageTheme.js'
 import HeroSection from '../components/home/HeroSection.jsx'
 import PartnersMarquee from '../components/home/PartnersMarquee.jsx'
-import StatsBand from '../components/home/StatsBand.jsx'
 import LifeCarousel from '../components/home/LifeCarousel.jsx'
 import DemoDay from '../components/home/DemoDay.jsx'
 import FeaturedProjects from '../components/home/FeaturedProjects.jsx'
@@ -31,7 +30,6 @@ export default function Home() {
     <>
       <HeroSection />
       <PartnersMarquee />
-      <StatsBand />
       <LifeCarousel />
       <DemoDay />
       <FeaturedProjects />
@@ -46,3 +44,4 @@ export default function Home() {
     </>
   )
 }
+

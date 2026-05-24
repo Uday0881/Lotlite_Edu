@@ -1,14 +1,7 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { ArrowRight, Loader2, CheckCircle2, Rocket, Briefcase } from 'lucide-react'
 import { submitLead } from '../../lib/submitLead.js'
-
-// ---- Edit program options here ----
-const PROGRAM_OPTIONS = [
-  'Data Science',
-  'MCA (PropTech & Engineering)',
-  'MCA (Ecosystems & CRM)',
-  'MBA in Real Estate',
-]
+import { programmesData } from '../../data/programmesData.js'
 
 const inputStyle = {
   marginTop: '0.375rem',
@@ -57,16 +50,33 @@ export default function LeadForm() {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [programInterest, setProgramInterest] = useState(PROGRAM_OPTIONS[0])
+  
+  // Dynamic Program Selection State
+  const programCategories = programmesData.navigation.filter(n => n.type === 'dropdown');
+  const [selectedCategory, setSelectedCategory] = useState(programCategories[0]?.title || '')
+  
+  const subPrograms = useMemo(() => {
+    const category = programCategories.find(c => c.title === selectedCategory);
+    return category ? category.items : [];
+  }, [selectedCategory, programCategories]);
+  
+  const [selectedProgram, setSelectedProgram] = useState(subPrograms[0]?.label || '')
+
   const [status, setStatus] = useState('idle') // idle | loading | success | error
   const [errorMessage, setErrorMessage] = useState('')
+
+  // Update selected program when category changes
+  useMemo(() => {
+    setSelectedProgram(subPrograms[0]?.label || '');
+  }, [subPrograms]);
+
 
   async function handleSubmit(e) {
     e.preventDefault()
     setStatus('loading')
     setErrorMessage('')
     try {
-      await submitLead({ fullName, email, phone, programInterest })
+      await submitLead({ fullName, email, phone, programInterest: `${selectedCategory} - ${selectedProgram}` })
       setStatus('success')
     } catch (err) {
       setStatus('error')
@@ -127,16 +137,29 @@ export default function LeadForm() {
             onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
         </FormField>
 
-        <FormField label="Academic Stream">
-          <select value={programInterest} onChange={(e) => setProgramInterest(e.target.value)}
-            disabled={loading} style={{ ...inputStyle, cursor: 'pointer' }}>
-            {PROGRAM_OPTIONS.map((opt) => (
-              <option key={opt} value={opt} style={{ background: 'var(--card)', color: 'var(--foreground)' }}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        </FormField>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <FormField label="Program Category">
+            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}
+              disabled={loading} style={{ ...inputStyle, cursor: 'pointer' }}>
+              {programCategories.map((opt) => (
+                <option key={opt.title} value={opt.title} style={{ background: 'var(--card)', color: 'var(--foreground)' }}>
+                  {opt.title}
+                </option>
+              ))}
+            </select>
+          </FormField>
+
+          <FormField label="Specialization">
+            <select value={selectedProgram} onChange={(e) => setSelectedProgram(e.target.value)}
+              disabled={loading || subPrograms.length === 0} style={{ ...inputStyle, cursor: subPrograms.length > 0 ? 'pointer' : 'not-allowed', opacity: subPrograms.length > 0 ? 1 : 0.5 }}>
+              {subPrograms.map((opt) => (
+                <option key={opt.label} value={opt.label} style={{ background: 'var(--card)', color: 'var(--foreground)' }}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </FormField>
+        </div>
 
         <button
           type="submit"
@@ -174,4 +197,3 @@ export default function LeadForm() {
     </form>
   )
 }
-

@@ -1,24 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { blogData } from '../../data/blogData.js'
-
-const GAP_PX = 32
-
-function useCardsPerView() {
-  const [cardsPerView, setCardsPerView] = useState(1)
-  useEffect(() => {
-    const update = () => {
-      const w = window.innerWidth
-      if (w >= 1024) setCardsPerView(3)
-      else if (w >= 768) setCardsPerView(2)
-      else setCardsPerView(1)
-    }
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
-  return cardsPerView
-}
 
 function BlogCard({ blog }) {
   return (
@@ -94,66 +76,23 @@ function BlogCard({ blog }) {
 }
 
 /**
- * BlogSection — infinite looping carousel of blog cards.
+ * BlogSection — horizontally scrollable carousel of blog cards.
  * Edit blogData.js to add/remove/edit blog posts.
  */
 export default function BlogSection({ blogs = blogData }) {
-  const cardsPerView = useCardsPerView()
-  const total = blogs.length
-  
-  // Clone the entire array 3 times to guarantee smooth infinite looping:
-  // [clones for prev] [real items] [clones for next]
-  const extended = [...blogs, ...blogs, ...blogs]
+  const [active, setActive] = useState(0)
+  const scrollerRef = useRef(null)
 
-  // Start in the middle section (index = total)
-  const [slideIndex, setSlideIndex] = useState(total)
-  const [animate, setAnimate] = useState(true)
-  const [isTransitioning, setIsTransitioning] = useState(false)
-  const containerRef = useRef(null)
-  const [cardWidth, setCardWidth] = useState(0)
-
-  const measure = useCallback(() => {
-    const container = containerRef.current
-    if (!container) return
-    const w = container.offsetWidth
-    const gaps = GAP_PX * (cardsPerView - 1)
-    setCardWidth((w - gaps) / cardsPerView)
-  }, [cardsPerView])
-
-  useEffect(() => {
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [measure])
-
-  const go = (direction) => {
-    if (!animate || isTransitioning) return
-    setIsTransitioning(true)
-    setSlideIndex((prev) => prev + direction)
-  }
-
-  const handleTransitionEnd = () => {
-    setIsTransitioning(false)
-    if (slideIndex < total) {
-      setAnimate(false)
-      setSlideIndex(slideIndex + total)
-    } else if (slideIndex >= total * 2) {
-      setAnimate(false)
-      setSlideIndex(slideIndex - total)
-    }
+  const go = (dir) => {
+    setActive((prev) => (prev + dir + blogs.length) % blogs.length)
   }
 
   useEffect(() => {
-    if (!animate) {
-      const id = requestAnimationFrame(() => requestAnimationFrame(() => setAnimate(true)))
-      return () => cancelAnimationFrame(id)
+    const el = scrollerRef.current?.children[active]
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
     }
-  }, [animate])
-
-  const step = cardWidth + GAP_PX
-  const translateX = slideIndex * step
-  const cardBasis = cardsPerView > 0 ? `calc((100% - ${GAP_PX * (cardsPerView - 1)}px) / ${cardsPerView})` : '100%'
-  const realIndex = slideIndex % total
+  }, [active])
 
   return (
     <section id="blogs" style={{ padding: '6rem 0', borderTop: '1px solid var(--hairline)', borderBottom: '1px solid var(--hairline)', backgroundColor: 'var(--card)', opacity: 0.9 }}>
@@ -168,12 +107,12 @@ export default function BlogSection({ blogs = blogData }) {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {[{ dir: -1, Icon: ChevronLeft, label: 'Previous' }, { dir: 1, Icon: ChevronRight, label: 'Next' }].map(({ dir, Icon, label }) => (
+            {[-1, 1].map((dir) => (
               <button
                 key={dir}
                 type="button"
                 onClick={() => go(dir)}
-                aria-label={`${label} blog`}
+                aria-label={dir === -1 ? 'Previous' : 'Next'}
                 style={{
                   height: '2.75rem',
                   width: '2.75rem',
@@ -189,32 +128,41 @@ export default function BlogSection({ blogs = blogData }) {
                 onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
               >
-                <Icon size={20} />
+                {dir === -1 ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
               </button>
             ))}
           </div>
         </div>
 
         {/* Carousel track */}
-        <div ref={containerRef} style={{ overflow: 'hidden' }}>
-          <div
-            style={{
-              display: 'flex',
-              gap: `${GAP_PX}px`,
-              transition: animate ? 'transform 500ms ease-in-out' : 'none',
-              transform: `translateX(-${translateX}px)`,
-            }}
-            onTransitionEnd={handleTransitionEnd}
-          >
-            {extended.map((blog, idx) => (
-              <div
-                key={`${blog.id}-${idx}`}
-                style={{ flexShrink: 0, flexBasis: cardBasis, minWidth: cardBasis }}
-              >
-                <BlogCard blog={blog} />
-              </div>
-            ))}
-          </div>
+        <div 
+          ref={scrollerRef} 
+          style={{ 
+            display: 'flex', 
+            gap: '2rem', 
+            overflowX: 'auto', 
+            paddingBottom: '1rem', 
+            scrollbarWidth: 'none', 
+            scrollSnapType: 'x mandatory' 
+          }}
+        >
+          {blogs.map((blog, idx) => (
+            <div
+              key={blog.id || idx}
+              onClick={() => setActive(idx)}
+              style={{ 
+                flexShrink: 0, 
+                scrollSnapAlign: 'center', 
+                width: 'min(85%, 380px)',
+                cursor: 'pointer',
+                opacity: idx === active ? 1 : 0.7,
+                transform: idx === active ? 'scale(1)' : 'scale(0.96)',
+                transition: 'all 500ms ease'
+              }}
+            >
+              <BlogCard blog={blog} />
+            </div>
+          ))}
         </div>
 
         {/* Dot indicators */}
@@ -224,16 +172,12 @@ export default function BlogSection({ blogs = blogData }) {
               key={i}
               type="button"
               aria-label={`Go to blog ${i + 1}`}
-              onClick={() => { 
-                if (!animate || isTransitioning || realIndex === i) return
-                setIsTransitioning(true)
-                setSlideIndex(total + i) 
-              }}
+              onClick={() => setActive(i)}
               style={{
                 height: '0.5rem',
-                width: i === realIndex ? '2rem' : '0.5rem',
+                width: i === active ? '2rem' : '0.5rem',
                 borderRadius: '9999px',
-                background: i === realIndex ? 'var(--gold)' : 'rgba(255,255,255,0.2)',
+                background: i === active ? 'var(--gold)' : 'rgba(255,255,255,0.2)',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 300ms ease-in-out',
@@ -246,3 +190,4 @@ export default function BlogSection({ blogs = blogData }) {
     </section>
   )
 }
+
