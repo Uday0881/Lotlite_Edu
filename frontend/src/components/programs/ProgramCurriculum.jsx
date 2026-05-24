@@ -4,6 +4,7 @@ import { programmesData } from '../../data/programmesData.js';
 import { useTheme } from '../../context/themeContext.js';
 import SemesterCard from '../curriculum/SemesterCard.jsx';
 import { Sparkles } from 'lucide-react';
+import ApplyDialog from '../shared/ApplyDialog.jsx';
 
 export default function ProgramCurriculum() {
   const { slug } = useParams();
@@ -96,9 +97,11 @@ export default function ProgramCurriculum() {
                   <span className="text-slate-400">{program.mode}</span>
                 </div>
               </div>
-              <Link to={`/apply?program=${program.slug}`} className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-400 to-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:scale-[1.01]">
-                Apply to {program.shortTitle}
-              </Link>
+              <ApplyDialog>
+                <button className="w-full inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-400 to-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:scale-[1.01]">
+                  Apply to {program.shortTitle}
+                </button>
+              </ApplyDialog>
             </div>
           </div>
         </div>

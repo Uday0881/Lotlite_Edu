@@ -4,6 +4,7 @@ import { ArrowRight, Clock, Award, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { programmesData } from '../../data/programmesData.js';
 import NotFound from '../NotFound';
+import ApplyDialog from '../../components/shared/ApplyDialog.jsx';
 
 export default function ProgramDetail() {
   const { programId } = useParams();
@@ -146,20 +147,22 @@ export default function ProgramDetail() {
               <p style={{ color: 'var(--muted-foreground)', lineHeight: 1.8, marginBottom: '1.5rem' }}>
                 Everything shown here is driven by centralized program configuration so it can evolve without code changes.
               </p>
-              <button
-                style={{
-                  width: '100%',
-                  padding: '0.95rem 1rem',
-                  borderRadius: '1rem',
-                  color: '#0F172A',
-                  background: 'linear-gradient(135deg, rgba(56,189,248,0.95), rgba(14,165,233,0.85))',
-                  border: 'none',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
-              >
-                Apply Now <ArrowRight size={16} />
-              </button>
+              <ApplyDialog>
+                <button
+                  style={{
+                    width: '100%',
+                    padding: '0.95rem 1rem',
+                    borderRadius: '1rem',
+                    color: '#0F172A',
+                    background: 'linear-gradient(135deg, rgba(56,189,248,0.95), rgba(14,165,233,0.85))',
+                    border: 'none',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Apply Now <ArrowRight size={16} />
+                </button>
+              </ApplyDialog>
             </div>
           </aside>
         </div>
