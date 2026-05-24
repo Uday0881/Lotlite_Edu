@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { usePageTheme } from '../../hooks/usePageTheme.js'
 import ApplyDialog from './ApplyDialog.jsx'
 import SpiralCurriculum from './SpiralCurriculum.jsx'

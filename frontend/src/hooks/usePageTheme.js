@@ -36,5 +36,7 @@ export function applyMode(mode) {
   html.classList.toggle('light', mode === 'light')
   try {
     localStorage.setItem('lotlite-mode', mode)
-  } catch {}
+  } catch {
+    // ignore
+  }
 }

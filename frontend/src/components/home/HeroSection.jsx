@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import ApplyDialog from '../shared/ApplyDialog.jsx'
 import { heroData } from '../../data/homeData.js'

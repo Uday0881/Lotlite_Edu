@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState } from 'react'
 import { ArrowRight, Loader2, CheckCircle2, Rocket, Briefcase } from 'lucide-react'
 import { submitLead } from '../../lib/submitLead.js'
 
@@ -42,7 +42,7 @@ function SuccessState() {
         <Rocket size={14} /> Founding Cohort Intake
       </div>
       <h3 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Done!!</h3>
-      <div style={{ marginTop: '2rem', borderRadius: '0.75rem', background: 'rgba(var(--gold),0.1)', border: '1px solid rgba(255,215,0,0.3)', padding: '1.5rem', textAlign: 'center', background: 'oklch(0.82 0.16 78 / 0.1)' }}>
+      <div style={{ marginTop: '2rem', borderRadius: '0.75rem', border: '1px solid rgba(255,215,0,0.3)', padding: '1.5rem', textAlign: 'center', background: 'oklch(0.82 0.16 78 / 0.1)' }}>
         <CheckCircle2 style={{ height: '2.5rem', width: '2.5rem', color: 'var(--gold)', margin: '0 auto 0.75rem' }} />
         <h4 style={{ fontWeight: 700, fontSize: '1.125rem' }}>Application received.</h4>
         <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)', marginTop: '0.25rem' }}>
@@ -174,3 +174,4 @@ export default function LeadForm() {
     </form>
   )
 }
+
