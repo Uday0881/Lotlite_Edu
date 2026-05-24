@@ -14,6 +14,16 @@ const darkVars = {
   color: 'oklch(0.98 0.005 250)',
 }
 
+const programmeLinks = [
+  { to: '/programmes/ug/bba', label: 'BBA' },
+  { to: '/programmes/ug/bca', label: 'BCA' },
+  { to: '/programmes/pg/mba', label: 'MBA' },
+  { to: '/programmes/pg/msc-data-science', label: 'MSc Data Science' },
+  { to: '/programmes/pg/msc-computer-applications', label: 'MSc Computer Applications' },
+  { to: '/programmes/crash-course', label: 'Crash Course' },
+  { to: '/programmes/startups', label: 'Startups' },
+]
+
 export default function Footer() {
   return (
     <footer style={{ ...darkVars, marginTop: '8rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
@@ -54,18 +64,13 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Programs */}
+        {/* Programmes */}
         <div>
           <h4 style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.5)', marginBottom: '1rem' }}>
-            Programs
+            Programmes
           </h4>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {[
-              { to: '/programs/data-science', label: 'Data Science' },
-              { to: '/programs/information-technology', label: 'MCA (PropTech)' },
-              { to: '/programs/crm', label: 'MCA (CRM)' },
-              { to: '/incubation', label: 'Incubation' },
-            ].map((item) => (
+            {programmeLinks.map((item) => (
               <li key={item.to}>
                 <Link
                   to={item.to}
