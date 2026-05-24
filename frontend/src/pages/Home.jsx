@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { usePageTheme } from '../hooks/usePageTheme.js'
 import HeroSection from '../components/home/HeroSection.jsx'
+import SpiralCurriculumOverview from '../components/curriculum/SpiralCurriculumOverview.jsx'
 import PartnersMarquee from '../components/home/PartnersMarquee.jsx'
 import LifeCarousel from '../components/home/LifeCarousel.jsx'
 import DemoDay from '../components/home/DemoDay.jsx'
@@ -28,6 +29,7 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+      <SpiralCurriculumOverview />
       <PartnersMarquee />
       <LifeCarousel />
       <DemoDay />
