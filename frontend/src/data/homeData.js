@@ -29,7 +29,7 @@ export const heroData = {
 // ---- Partners Marquee ----
 export const partnersData = {
   label: 'Our Corporate Partners',
-  partners: ['DLF', 'Lodha', 'Blackstone', 'JLL', 'Godrej', 'Prestige'],
+  partners: ['Paranjape Schemes', 'Lodha Group' , 'VTP Realty' , 'Pristine Properties' , 'Kolte-Patil Developers' , 'Suratwwala Business Group' , 'Mahindra Lifespaces' , 'Kumar Properties' , 'Godrej Properties', 'Goel Ganga Developments'],
 }
 
 // ---- Marquee Images ----

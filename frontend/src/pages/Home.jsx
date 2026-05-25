@@ -32,10 +32,10 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <ImageMarquee />
       <SpiralCurriculumOverview />
       <PartnersMarquee />
       <LifeCarousel />
+      <ImageMarquee />
       <DemoDay />
       <FeaturedProjects />
       <DailySchedule />
