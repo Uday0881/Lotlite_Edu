@@ -29,7 +29,10 @@ export default function AdmissionsProcess() {
           <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold)', marginBottom: '0.75rem' }}>
             {admissionsSection.eyebrow}
           </div>
-          <h2 style={{ fontSize: 'clamp(1.875rem,5vw,3rem)', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--background)' }}>
+          <style>{`
+            .admissions-heading { color: var(--foreground); }
+          `}</style>
+          <h2 className="admissions-heading text-white dark:text-white" style={{ fontSize: 'clamp(1.875rem,5vw,3rem)', fontWeight: 700, marginBottom: '1.5rem', color: '#ffffff' }}>
             {admissionsSection.heading}
           </h2>
           <p style={{ fontSize: '1.125rem', color: 'rgba(255,255,255,0.7)', maxWidth: '48rem', margin: '0 auto', lineHeight: 1.625 }}>
