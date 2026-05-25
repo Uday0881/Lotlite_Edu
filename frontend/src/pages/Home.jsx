@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { usePageTheme } from '../hooks/usePageTheme.js'
 import HeroSection from '../components/home/HeroSection.jsx'
+import ImageMarquee from '../components/home/ImageMarquee.jsx'
 import SpiralCurriculumOverview from '../components/curriculum/SpiralCurriculumOverview.jsx'
 import PartnersMarquee from '../components/home/PartnersMarquee.jsx'
 import LifeCarousel from '../components/home/LifeCarousel.jsx'
@@ -8,9 +9,11 @@ import DemoDay from '../components/home/DemoDay.jsx'
 import FeaturedProjects from '../components/home/FeaturedProjects.jsx'
 import DailySchedule from '../components/home/DailySchedule.jsx'
 import PillarsSection from '../components/home/PillarsSection.jsx'
+import FounderMessage from '../components/home/FounderMessage.jsx'
 import OutcomesSection from '../components/home/OutcomesSection.jsx'
 import TestimonialsSection from '../components/home/TestimonialsSection.jsx'
 import AdmissionsProcess from '../components/shared/AdmissionsProcess.jsx'
+import FinancingOptions from '../components/shared/FinancingOptions.jsx'
 import BlogSection from '../components/shared/BlogSection.jsx'
 import FAQ from '../components/shared/FAQ.jsx'
 
@@ -29,6 +32,7 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+      <ImageMarquee />
       <SpiralCurriculumOverview />
       <PartnersMarquee />
       <LifeCarousel />
@@ -36,9 +40,11 @@ export default function Home() {
       <FeaturedProjects />
       <DailySchedule />
       <PillarsSection />
+      <FounderMessage />
       <OutcomesSection />
       <TestimonialsSection />
       <AdmissionsProcess />
+      <FinancingOptions />
       <BlogSection />
       <FAQ />
     </>

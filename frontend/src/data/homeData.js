@@ -32,6 +32,15 @@ export const partnersData = {
   partners: ['DLF', 'Lodha', 'Blackstone', 'JLL', 'Godrej', 'Prestige'],
 }
 
+// ---- Marquee Images ----
+export const marqueeImages = [
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1494526585095-c41746248156?w=1000&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1000&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=1000&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1000&q=80&auto=format&fit=crop',
+]
+
 // ---- Stats Band ----
 export const statsData = [
   { target: 18, suffix: 'L+', label: 'Average CTC', decimals: 0 },
