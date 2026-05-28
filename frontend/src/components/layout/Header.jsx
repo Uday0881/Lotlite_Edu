@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { ChevronDown, Menu, X, ChevronRight } from 'lucide-react'
 import ThemeToggle from '../shared/ThemeToggle.jsx'
 import ApplyDialog from '../shared/ApplyDialog.jsx'
+import { getInitialMode } from '../../hooks/usePageTheme.js'
 import { programmesData } from '../../data/programmesData.js'
 
 export default function Header() {
@@ -10,13 +11,24 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeMobileAccordion, setActiveMobileAccordion] = useState(null)
+  const [themeMode, setThemeMode] = useState(getInitialMode())
   const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+
+    const onModeChange = (event) => {
+      const nextMode = event?.detail || document.documentElement.classList.contains('light') ? 'light' : 'dark'
+      setThemeMode(nextMode)
+    }
+    window.addEventListener('lotlite-mode-change', onModeChange)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('lotlite-mode-change', onModeChange)
+    }
   }, [])
 
   return (
@@ -28,7 +40,7 @@ export default function Header() {
         right: 0,
         zIndex: 50,
         transition: 'all 300ms',
-        ...(scrolled
+        ...((scrolled || themeMode === 'light')
           ? {
               backgroundColor: 'var(--glass-bg)',
               backdropFilter: 'blur(14px) saturate(160%)',

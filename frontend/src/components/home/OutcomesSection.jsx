@@ -29,7 +29,7 @@ export default function OutcomesSection() {
           <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold)', marginBottom: '0.75rem' }}>
             {homepageOutcomesData.eyebrow}
           </div>
-          <h2 style={{ fontSize: 'clamp(1.5rem,4vw,2.25rem)', fontWeight: 700 }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem,4vw,2.25rem)', fontWeight: 700, color: 'white' }}>
             {homepageOutcomesData.heading}
           </h2>
           <p style={{ marginTop: '1rem', color: 'var(--muted-foreground)', lineHeight: 1.625 }}>

@@ -39,4 +39,8 @@ export function applyMode(mode) {
   } catch {
     // ignore
   }
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('lotlite-mode-change', { detail: mode }))
+  }
 }
